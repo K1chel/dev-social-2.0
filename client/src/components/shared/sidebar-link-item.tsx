@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ interface SidebarLinkItemProps {
   label: string;
   icon: LucideIcon;
   isMobile?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const SidebarLinkItem = ({
@@ -17,6 +18,7 @@ export const SidebarLinkItem = ({
   label,
   icon: Icon,
   isMobile,
+  setIsOpen,
 }: SidebarLinkItemProps) => {
   const [activeMenu, setActiveMenu] = useState("");
 
@@ -28,7 +30,12 @@ export const SidebarLinkItem = ({
   }, [location.pathname]);
 
   const onNavigate = (href: string) => {
-    navigate(href);
+    if (isMobile && setIsOpen) {
+      navigate(href);
+      setIsOpen(false);
+    } else {
+      navigate(href);
+    }
   };
 
   return (

@@ -66,19 +66,23 @@ const loginUser = async (req, res) => {
     if (!user || !isPasswordMatch)
       return res.status(400).json({ error: "Invalid username or password" });
 
-    generateToken(user._id, res);
+    if (user) {
+      generateToken(user._id, res);
 
-    res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      avatar: user.avatar,
-      bio: user.bio,
-      followers: user.followers,
-      following: user.following,
-      liked: user.liked,
-      saved: user.saved,
-    });
+      res.status(200).json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        bio: user.bio,
+        followers: user.followers,
+        following: user.following,
+        liked: user.liked,
+        saved: user.saved,
+      });
+    } else {
+      res.status(400).json({ error: "Invalid user data" });
+    }
   } catch (error) {
     console.log(`Error in loginUser: ${error.message}`.red.bold);
     res.status(500).json({ message: error.message });
@@ -135,4 +139,25 @@ const updateUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, logoutUser, updateUser };
+const getProfileByUsername = async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await User.findOne({ username }).select("-password");
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(`Error in getProfileByUsername: ${error.message}`.red.bold);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  updateUser,
+  getProfileByUsername,
+};

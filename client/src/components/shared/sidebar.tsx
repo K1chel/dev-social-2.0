@@ -8,8 +8,15 @@ import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { TopLoader } from "../loaders/top-loader";
 import { SidebarLinkItem } from "./sidebar-link-item";
+import { Dispatch, SetStateAction } from "react";
 
-export const Sidebar = ({ isMobile }: { isMobile?: boolean }) => {
+export const Sidebar = ({
+  isMobile,
+  setIsOpen,
+}: {
+  isMobile?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+}) => {
   const user = useRecoilValue(userAtom);
 
   const { handleLogout, isLoading } = useLogout();
@@ -39,6 +46,7 @@ export const Sidebar = ({ isMobile }: { isMobile?: boolean }) => {
               icon={icon}
               label={label}
               isMobile={isMobile}
+              setIsOpen={setIsOpen}
             />
           ))}
           <SidebarLinkItem
@@ -46,6 +54,7 @@ export const Sidebar = ({ isMobile }: { isMobile?: boolean }) => {
             icon={User2}
             label={"Profile"}
             isMobile={isMobile}
+            setIsOpen={setIsOpen}
           />
         </section>
         <section className="px-3 my-4">

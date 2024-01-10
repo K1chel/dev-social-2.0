@@ -11,6 +11,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import UserAvatar from "@/components/user-avatar";
 import { useNavigate } from "react-router-dom";
+import useUpdateProfileModal from "@/hooks/use-update-profile-modal";
 
 interface UserMenuProps {
   handleLogout: () => void;
@@ -20,6 +21,8 @@ export const UserMenu = ({ handleLogout }: UserMenuProps) => {
   const user = useRecoilValue(userAtom);
 
   const navigate = useNavigate();
+
+  const { onOpen } = useUpdateProfileModal();
 
   const onNavigate = (href: string) => {
     navigate(href);
@@ -39,7 +42,10 @@ export const UserMenu = ({ handleLogout }: UserMenuProps) => {
           <span className="text-sm">Profile</span>
         </DropdownMenuItem>
         <Separator />
-        <DropdownMenuItem className="rounded-none flex items-center gap-x-4 py-2.5">
+        <DropdownMenuItem
+          onClick={onOpen}
+          className="rounded-none flex items-center gap-x-4 py-2.5"
+        >
           <Settings className="w-5 h-5" />
           <span className="text-sm">Update</span>
         </DropdownMenuItem>

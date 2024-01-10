@@ -1,9 +1,11 @@
 import * as z from "zod";
 
+import { userAtom } from "@/atoms/user-atom";
 import { AuthFooter } from "@/components/auth/auth-footer";
 import { AuthHeader } from "@/components/auth/auth-header";
 import { AuthWrapper } from "@/components/auth/auth-wrapper";
 import { ShowPassword } from "@/components/auth/show-password";
+import { TopLoader } from "@/components/loaders/top-loader";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,11 +20,8 @@ import { loginValidation } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { BASE_URL } from "@/lib/config";
 import { useSetRecoilState } from "recoil";
-import { userAtom } from "@/atoms/user-atom";
-import { TopLoader } from "@/components/loaders/top-loader";
+import { toast } from "sonner";
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -41,11 +40,12 @@ export const LoginPage = () => {
 
   const onSubmit = async (values: z.infer<typeof loginValidation>) => {
     try {
-      const res = await fetch(`${BASE_URL}/users/login`, {
+      const res = await fetch(`/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(values),
       });
       const data = await res.json();
@@ -57,6 +57,7 @@ export const LoginPage = () => {
       setUser(data);
       localStorage.setItem("user", JSON.stringify(data));
       toast.success("Logged in successfully!");
+      window.location.reload();
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong!");

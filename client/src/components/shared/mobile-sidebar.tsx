@@ -19,13 +19,12 @@ export const MobileSidebar = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger>
-        <Button size="icon" variant="ghost" asChild className="p-2">
+        <Button size="icon" variant="ghost" className="p-2" asChild>
           <Menu />
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0">
-        {/* TODO: onClick on item close sidebar!! */}
-        <Sidebar isMobile />
+        <Sidebar isMobile setIsOpen={setIsOpen} />
       </SheetContent>
     </Sheet>
   );

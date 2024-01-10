@@ -4,11 +4,12 @@ import { cn } from "@/lib/utils";
 interface UserAvatarProps {
   src: string | null;
   className?: string;
+  onClick?: () => void;
 }
 
-const UserAvatar = ({ src, className }: UserAvatarProps) => {
+const UserAvatar = ({ src, className, onClick }: UserAvatarProps) => {
   return (
-    <Avatar className={cn("border", className)}>
+    <Avatar onClick={onClick} className={cn("border", className)}>
       <AvatarImage src={src || "/images/placeholder.jpg"} />
     </Avatar>
   );

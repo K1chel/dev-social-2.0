@@ -5,10 +5,12 @@ import {
   loginUser,
   logoutUser,
   updateUser,
+  getProfileByUsername,
 } from "../controllers/user.js";
 
 const router = express.Router();
 
+router.get("/profile/:username", getProfileByUsername);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
