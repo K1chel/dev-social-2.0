@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+.show-password {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 8px 8px 0;
+  transition: 0.2s ease-in-out;
+  @apply text-muted-foreground;
+}
+
+.show-password:hover {
+  @apply text-white bg-primary/5;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
