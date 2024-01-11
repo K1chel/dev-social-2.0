@@ -1,6 +1,7 @@
 import { HomePage } from "@/pages/home-page";
 import { LoginPage } from "@/pages/login-page";
 import { RegisterPage } from "@/pages/register-page";
+import { SuggestedUsersPage } from "@/pages/suggested-users-page";
 import { UserProfilePage } from "@/pages/user-profile-page";
 
 export const publicRoutes = [
@@ -22,5 +23,9 @@ export const privateRoutes = [
   {
     path: "/profile/:username",
     element: UserProfilePage,
+  },
+  {
+    path: "/suggested/",
+    element: SuggestedUsersPage,
   },
 ];

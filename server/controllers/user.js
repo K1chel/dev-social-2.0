@@ -154,10 +154,93 @@ const getProfileByUsername = async (req, res) => {
   }
 };
 
+const suggestedUsers = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const usersFollowedByYou = await User.findById(userId).select("following");
+
+    const users = await User.aggregate([
+      {
+        $match: {
+          _id: { $ne: userId },
+        },
+      },
+      {
+        $sample: { size: 10 },
+      },
+    ]);
+    const filterredUsers = users.filter(
+      (user) => !usersFollowedByYou.following.includes(user._id.toString())
+    );
+    const suggestedUsers = filterredUsers.slice(0, 5);
+
+    suggestedUsers.forEach((user) => (user.password = null));
+
+    res.status(200).json(suggestedUsers);
+  } catch (error) {
+    console.log(`Error in suggestedUsers: ${error.message}`.red.bold);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const followUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userToFollow = await User.findById(id);
+    const currentUser = await User.findById(req.user._id);
+
+    if (id === req.user._id.toString())
+      return res.status(400).json({ error: "You cannot follow yourself" });
+
+    if (!userToFollow || !currentUser)
+      return res.status(404).json({ error: "User not found" });
+
+    const isFollowing = currentUser.following.includes(id);
+
+    if (isFollowing) {
+      // Unfollow user
+      await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } });
+      await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } });
+      res.status(200).json({ message: "Successfuly unfollowed" });
+    } else {
+      // Follow user
+      await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } });
+      await User.findByIdAndUpdate(req.user._id, { $push: { following: id } });
+      res.status(200).json({ message: "Successfuly followed" });
+    }
+  } catch (error) {
+    console.log(`Error in followUser: ${error.message}`.red.bold);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const users = await User.aggregate([
+      {
+        $match: {
+          _id: { $ne: userId },
+        },
+      },
+    ]);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(`Error in getAllUsers: ${error.message}`.red.bold);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   updateUser,
   getProfileByUsername,
+  suggestedUsers,
+  followUser,
+  getAllUsers,
 };

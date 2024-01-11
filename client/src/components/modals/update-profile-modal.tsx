@@ -16,6 +16,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+import usePreviewImage from "@/hooks/use-preview-image";
 import useUpdateProfileModal from "@/hooks/use-update-profile-modal";
 import { IUser } from "@/types";
 import { useRef } from "react";
@@ -25,7 +26,6 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import UserAvatar from "../user-avatar";
-import usePreviewImage from "@/hooks/use-preview-image";
 
 export const UpdateProfileModal = () => {
   const avatarRef = useRef<HTMLInputElement>(null!);
@@ -70,8 +70,6 @@ export const UpdateProfileModal = () => {
       toast.error("Something went wrong, please try again.");
     }
   };
-
-  console.log(user);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

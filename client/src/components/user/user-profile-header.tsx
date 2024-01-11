@@ -4,6 +4,8 @@ import { useRecoilValue } from "recoil";
 import { userAtom } from "@/atoms/user-atom";
 import { Button } from "../ui/button";
 import useUpdateProfileModal from "@/hooks/use-update-profile-modal";
+import useFollowUnfollowUser from "@/hooks/use-follow-unfollow-user";
+import { Loader2 } from "lucide-react";
 
 interface UserProfileHeaderProps {
   user: IUser;
@@ -14,9 +16,11 @@ export const UserProfileHeader = ({ user }: UserProfileHeaderProps) => {
   const currentUser = useRecoilValue(userAtom);
 
   const { onOpen } = useUpdateProfileModal();
+  const { handleFollowUnfollow, isFollowing, isUpdating } =
+    useFollowUnfollowUser(user);
 
   const truncatedBio =
-    bio && bio.length > 100 ? bio.slice(0, 300) + "..." : bio;
+    bio && bio.length > 300 ? bio.slice(0, 300) + "..." : bio;
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-4 w-full">
@@ -55,8 +59,14 @@ export const UserProfileHeader = ({ user }: UserProfileHeaderProps) => {
             Update Profile
           </Button>
         ) : (
-          <Button size="lg" className="w-full">
-            Follow
+          <Button onClick={handleFollowUnfollow} size="lg" className="w-full">
+            {isUpdating ? (
+              <Loader2 className="w-6 h-6 text-muted-foreground animate-spin" />
+            ) : isFollowing ? (
+              "Unfollow"
+            ) : (
+              "Follow"
+            )}
           </Button>
         )}
       </div>
