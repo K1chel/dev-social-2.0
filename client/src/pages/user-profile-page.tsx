@@ -39,7 +39,7 @@ export const UserProfilePage = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <div className="max-w-5xl mx-auto h-full py-5 px-4 md:px-6 xl:px-8 relative">
+    <div className="max-w-3xl mx-auto h-full py-5 px-4 md:px-6 xl:px-8 relative w-full">
       <UserProfileHeader user={user} />
     </div>
   );

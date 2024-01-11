@@ -11,6 +11,11 @@ import userRoutes from "./routes/user.js";
 const app = express();
 connectDB();
 
+const SERVER_ORIGIN =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://www.yourdomain.com";
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -22,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: SERVER_ORIGIN,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })

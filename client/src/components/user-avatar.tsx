@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
 interface UserAvatarProps {
-  src: string | null;
+  src: string | null | undefined;
   className?: string;
   onClick?: () => void;
 }

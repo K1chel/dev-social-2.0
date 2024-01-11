@@ -25,10 +25,13 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import UserAvatar from "../user-avatar";
+import usePreviewImage from "@/hooks/use-preview-image";
 
 export const UpdateProfileModal = () => {
-  const { isOpen, onClose } = useUpdateProfileModal();
   const avatarRef = useRef<HTMLInputElement>(null!);
+
+  const { isOpen, onClose } = useUpdateProfileModal();
+  const { handleImageChange, imageUrl } = usePreviewImage();
 
   const [user, setUser] = useRecoilState<IUser | null>(userAtom);
 
@@ -50,7 +53,7 @@ export const UpdateProfileModal = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...values }),
+        body: JSON.stringify({ ...values, avatar: imageUrl }),
       });
       const data = await res.json();
       if (data.error) {
@@ -87,9 +90,14 @@ export const UpdateProfileModal = () => {
                   <UserAvatar
                     onClick={() => avatarRef.current.click()}
                     className="md:w-40 md:h-40 w-32 h-32 cursor-pointer"
-                    src=""
+                    src={imageUrl || user?.avatar}
                   />
-                  <input type="file" hidden ref={avatarRef} />
+                  <input
+                    type="file"
+                    hidden
+                    ref={avatarRef}
+                    onChange={handleImageChange}
+                  />
                 </div>
                 <div className="flex-1">
                   <FormField

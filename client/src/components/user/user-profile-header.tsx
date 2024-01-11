@@ -19,7 +19,7 @@ export const UserProfileHeader = ({ user }: UserProfileHeaderProps) => {
     bio && bio.length > 100 ? bio.slice(0, 300) + "..." : bio;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-y-4 w-auto">
+    <div className="flex flex-col items-center justify-center gap-y-4 w-full">
       <UserAvatar className="w-40 h-40" src={avatar || ""} />
       <h3 className="text-2xl font-semibold">@{username}</h3>
       <h5 className="text-sm">
