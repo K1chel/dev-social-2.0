@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import generateToken from "../utils/generateToken.js";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 
 const registerUser = async (req, res) => {
   try {
@@ -141,9 +142,19 @@ const updateUser = async (req, res) => {
 
 const getProfileByUsername = async (req, res) => {
   try {
-    const { username } = req.params;
+    const { query } = req.params;
 
-    const user = await User.findOne({ username }).select("-password");
+    let user;
+
+    if (mongoose.Types.ObjectId.isValid(query)) {
+      user = await User.findOne({ _id: query })
+        .select("-password")
+        .select("-updatedAt");
+    } else {
+      user = await User.findOne({ username: query })
+        .select("-password")
+        .select("-updatedAt");
+    }
 
     if (!user) return res.status(404).json({ error: "User not found" });
 

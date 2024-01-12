@@ -7,6 +7,7 @@ import cors from "cors";
 import connectDB from "./config/connectDB.js";
 
 import userRoutes from "./routes/user.js";
+import postRoutes from "./routes/post.js";
 
 const app = express();
 connectDB();
@@ -37,5 +38,6 @@ app.get("/", (req, res) => res.send("Hello Worlddd!"));
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(process.env.PORT, () => console.log("Server running...".rainbow));

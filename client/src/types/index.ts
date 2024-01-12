@@ -13,6 +13,13 @@ export interface IUser {
 }
 
 export interface IPost {
-  id: string;
-  body: string;
+  _id: string;
+  postedBy: IUser;
+  text: string;
+  image?: string | null;
+  likes: IUser[];
+  saves: IUser[];
+  replies: any[];
+  createdAt: string;
+  updatedAt: string;
 }

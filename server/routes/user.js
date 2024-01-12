@@ -13,7 +13,7 @@ import {
 
 const router = express.Router();
 
-router.get("/profile/:username", getProfileByUsername);
+router.get("/profile/:query", getProfileByUsername);
 router.get("/suggested", protectRoute, suggestedUsers);
 router.get("/all-users", protectRoute, getAllUsers);
 router.post("/register", registerUser);
