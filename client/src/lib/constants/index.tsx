@@ -12,3 +12,18 @@ export const sidebarLinks = [
     icon: UsersRound,
   },
 ];
+
+export const tabLinks = [
+  {
+    label: "Posts",
+    value: "posts",
+  },
+  {
+    label: "Liked",
+    value: "liked",
+  },
+  {
+    label: "Saved",
+    value: "saved",
+  },
+];

@@ -107,7 +107,7 @@ export const AddPostModal = () => {
                       <FormControl>
                         <Textarea
                           {...field}
-                          className="border-none resize-none"
+                          className="resize-none border-none"
                           placeholder="Start a post..."
                         />
                       </FormControl>
